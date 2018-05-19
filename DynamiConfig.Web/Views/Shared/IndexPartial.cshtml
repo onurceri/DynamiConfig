@@ -1,0 +1,116 @@
+﻿@using DynamiConfig.Web.Models
+
+@model ConfigurationViewModel
+
+<link href="~/lib/bootstrap/dist/css/bootstrap-theme.css" rel="stylesheet" />
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+
+
+<table class="table table-bordered" style="margin-top:100px;">
+    <thead>
+        <tr>
+            <th scope="col"></th>
+            <th scope="col">Name</th>
+            <th scope="col">Type</th>
+            <th scope="col">Value</th>
+            <th scope="col">ApplicationName</th>
+            <th scope="col">Update</th>
+            <th scope="col">Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.ConfigurationList != null && Model.ConfigurationList.Count > 0)
+        {
+            for (int i = 0; i < Model.ConfigurationList.Count; i++)
+            {
+                <tr>
+                    <th scope="row">@(i + 1)</th>
+                    <td>@Model.ConfigurationList[i].Name</td>
+                    <td>@Model.ConfigurationList[i].Type</td>
+                    <td>@Model.ConfigurationList[i].EntityValue</td>
+                    <td>@Model.ConfigurationList[i].ApplicationName</td>
+                    <td><button asp-controller="Home" asp-action="Update" class="btn btn-success" type="submit" data-id="@Model.ConfigurationList[i].Id">Update</button></td>
+                    <td><button id="contentSubmit" name="submit" type="submit" value="Delete" class="btn btn-danger" onclick="setDeletedObjectId('@Model.ConfigurationList[i].Id')">Delete</button></td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createEntityModal">
+    Add New
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="createEntityModal" tabindex="-1" role="dialog" aria-labelledby="createEntityModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row newEntityRow">
+                    <div class="col-md-3">
+                        <span>ApplicationName</span>
+                    </div>
+                    <div class="col-md-9">
+                        <input asp-for="NewConfigModel.ApplicationName" class="form-control" type="text" size="15" />
+                    </div>
+                </div>
+                <div class="row newEntityRow">
+                    <div class="col-md-3">
+                        <span>Type</span>
+                    </div>
+                    <div class="col-md-9"> 
+                        <input asp-for="NewConfigModel.Type" class="form-control" type="text" size="15" />
+                    </div>
+                </div>
+                <div class="row newEntityRow">
+                    <div class="col-md-3">
+                        <span>Value</span>
+                    </div>
+                    <div class="col-md-9">
+                        <input asp-for="NewConfigModel.EntityValue" class="form-control" type="text" size="15" />
+                    </div>
+                </div>
+                <div class="row newEntityRow">
+                    <div class="col-md-3">
+                        <span>Name</span>
+                    </div>
+                    <div class="col-md-9">
+                        <input asp-for="NewConfigModel.Name" class="form-control" type="text" size="15" />
+                    </div>
+                </div>
+                <div class="row newEntityRow">
+                    <div class="col-md-3">
+                        <span>IsActive</span>
+                    </div>
+                    <div class="col-md-9">
+                        <input asp-for="NewConfigModel.IsActive" class="form-control" type="text" size="15" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button asp-controller="Home" name="submit" type="submit" value="Create" onclick="$('div.modal-backdrop').removeClass('in');" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.HiddenFor(a => a.DeletedObjectId)
+
+<style>
+    .newEntityRow{
+        margin-top:5px;
+    }
+</style>
+
+<script>
+    function setDeletedObjectId(objectId) {
+        $('#DeletedObjectId').val(objectId);
+    }
+</script>

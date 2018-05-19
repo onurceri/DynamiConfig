@@ -1,0 +1,12 @@
+﻿@using DynamiConfig.Web.Models
+
+@model ConfigurationViewModel
+
+<form asp-controller="Home" asp-action="Index" data-ajax="true" data-method="post" data-ajax-mode="replace" data-ajax-update="#updateDiv">
+    <div id="updateDiv">
+        @Html.Partial("IndexPartial", Model)
+    </div>
+</form>
+
+
+
